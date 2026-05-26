@@ -17,7 +17,7 @@ def db_converter(filename: Path):
     idx = match_df.loc[match_df].index.min()
     new_df = df[match_df]
     new_df.columns = df.iloc[idx - 1]
-    filepath = Path("../../db_transactions.csv")
+    filepath = Path("db_transactions.csv")
     new_df.to_csv(filepath, index=False)
 
 
@@ -35,7 +35,7 @@ def sbi_converter(filename: Path):
     new_df.columns = df.iloc[idx - 1]
     new_df["Details"] = new_df["Details"].str.replace("   ", " ").str.replace("\n ", "").str.strip()
 
-    filepath = Path("../../sbi_transactions.csv")
+    filepath = Path("sbi_transactions.csv")
     new_df.to_csv(filepath, index=False)
 
 
