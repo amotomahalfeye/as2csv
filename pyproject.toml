@@ -1,6 +1,6 @@
 [project]
 name = "as2csv"
-version = "0.1.0"
+version = "0.2.0"
 description = "Account statement to CSV converter."
 authors = [{ name = "Amotoma Halfeye", email = "amotomahalfeye@protonmail.com" }]
 requires-python = ">=3.14"
@@ -10,20 +10,24 @@ dependencies = [
     "openpyxl>=3.1.5",
     "pandas>=3.0.2",
     "ruff>=0.15.14",
+    "typer>=0.26.3",
     "xlrd>=2.0.2",
 ]
 
 [project.scripts]
-as2csv = "as2csv:main"
+as2csv = "as2csv.main:app"
 
 [dependency-groups]
 dev = [
     "ruff>=0.15.4",
 ]
 
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
 [tool.uv]
 upgrade = true
-package = true
 
 [tool.ruff]
 line-length = 120

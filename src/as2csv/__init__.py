@@ -1,3 +1,3 @@
-__all__ = ["main"]
+from importlib.metadata import version
 
-from .as2csv import main
+__version__ = version("as2csv")
