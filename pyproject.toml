@@ -1,9 +1,9 @@
 [project]
 name = "as2csv"
-version = "0.2.0"
+version = "0.2.1"
 description = "Account statement to CSV converter."
 authors = [{ name = "Amotoma Halfeye", email = "amotomahalfeye@protonmail.com" }]
-requires-python = ">=3.14"
+requires-python = ">=3.11"
 dependencies = [
     "ipykernel>=7.2.0",
     "msoffcrypto-tool>=6.0.0",
@@ -34,3 +34,6 @@ line-length = 120
 
 [tool.ruff.format]
 skip-magic-trailing-comma = true
+
+[tool.hatch.build.targets.sdist]
+only-packages = true

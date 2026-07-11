@@ -1,0 +1,27 @@
+name: Publish
+
+on:
+  workflow_dispatch:
+
+jobs:
+  publish:
+    runs-on: node-lts
+    steps:
+      - name: Checkout
+        uses: https://github.com/actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Install uv
+        uses: https://github.com/astral-sh/setup-uv@fac544c07dec837d0ccb6301d7b5580bf5edae39 # v8.2.0
+      - name: Build distribution
+        run: uv build
+      - name: Publish
+        run: |
+          URL="${{ env.FORGEJO_SERVER_URL }}"
+          uv publish --publish-url ${URL}/api/packages/${{ env.FORGEJO_REPOSITORY_OWNER }}/pypi --check-url https://${{ env.FORGEJO_REPOSITORY_OWNER }}:${{ secrets.PACKAGE_CREATE_TOKEN }}@${URL:8}/api/packages/${{ env.FORGEJO_REPOSITORY_OWNER }}/pypi/simple --username ${{ env.FORGEJO_REPOSITORY_OWNER }} --password ${{ secrets.PACKAGE_CREATE_TOKEN }}
+      - name: Tag commit
+        run: |
+          VERSION=$(uv version --short)
+          git config user.name "${{ env.FORGEJO_REPOSITORY_OWNER }}"
+          git config user.email amotomahalfeye@protonmail.com
+          git tag "v${VERSION}"
+          echo "${{ env.FORGEJO_REPOSITORY_OWNER }}"
+          git push origin "v${VERSION}"
