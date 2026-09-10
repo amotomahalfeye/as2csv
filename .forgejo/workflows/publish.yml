@@ -6,7 +6,7 @@ on:
 jobs:
   publish:
     runs-on: debian-latest
-    container: docker.io/library/node:26.7.0@sha256:bde0dae02f2b12d2bce5ee72b2432f0e511767b7b2dc4dd3b064df11ae422fee
+    container: docker.io/library/node:26.8.2@sha256:fb192b8ad31841aadc4bb79c44ae0f59d193a798ffbc9fdce37ba6ecb20c2236
     steps:
       - name: Checkout
         uses: https://github.com/actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
