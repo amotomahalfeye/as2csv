@@ -1,17 +1,21 @@
 import io
+import logging
 import warnings
 from enum import Enum
 from getpass import getpass
 from pathlib import Path
+from typing import Annotated
 
 import msoffcrypto
 import pandas as pd
 import typer
-from msoffcrypto.exceptions import DecryptionError
+
+from . import __version__
 
 warnings.filterwarnings("ignore")
 
 app = typer.Typer()
+logger = logging.getLogger("as2csv")
 
 
 def db_converter(filename: Path):
@@ -27,8 +31,8 @@ def db_converter(filename: Path):
         new_df.columns = df.iloc[idx - 1]
         filepath = Path("db_transactions.csv")
         new_df.to_csv(filepath, index=False)
-    except Exception as e:
-        print(f"Unable to convert: {e}")
+    except Exception:
+        logger.exception("Unable to convert")
 
 
 def sbi_converter(filename: Path):
@@ -48,10 +52,10 @@ def sbi_converter(filename: Path):
 
         filepath = Path("sbi_transactions.csv")
         new_df.to_csv(filepath, index=False)
-    except DecryptionError as _:
+    except msoffcrypto.exceptions.DecryptionError as _:
         print("Wrong password!!!")
-    except Exception as e:
-        print(f"Unable to convert: {e}")
+    except Exception:
+        logger.exception("Unable to convert")
 
 
 class ConverterType(str, Enum):
@@ -59,8 +63,20 @@ class ConverterType(str, Enum):
     sbi = "sbi"
 
 
+def version_callback(value: bool):
+    if value:
+        typer.echo(f"as2csv {__version__}")
+        raise typer.Exit()
+
+
 @app.command()
-def main(converter: ConverterType, filename: Path):
+def main(
+    converter: ConverterType,
+    filename: Path,
+    _version: Annotated[
+        bool, typer.Option("--version", help="Show version and exit.", callback=version_callback)
+    ] = False,
+):
     match converter:
         case ConverterType.db:
             db_converter(filename)
