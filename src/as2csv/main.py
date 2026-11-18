@@ -4,10 +4,13 @@ import warnings
 from enum import Enum
 from getpass import getpass
 from pathlib import Path
+from typing import Annotated
 
 import msoffcrypto
 import pandas as pd
 import typer
+
+from . import __version__
 
 warnings.filterwarnings("ignore")
 
@@ -60,8 +63,20 @@ class ConverterType(str, Enum):
     sbi = "sbi"
 
 
+def version_callback(value: bool):
+    if value:
+        typer.echo(f"as2csv {__version__}")
+        raise typer.Exit()
+
+
 @app.command()
-def main(converter: ConverterType, filename: Path):
+def main(
+    converter: ConverterType,
+    filename: Path,
+    _version: Annotated[
+        bool, typer.Option("--version", help="Show version and exit.", callback=version_callback)
+    ] = False,
+):
     match converter:
         case ConverterType.db:
             db_converter(filename)

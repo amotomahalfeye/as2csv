@@ -1,8 +1,19 @@
 # CHANGELOG
 
+
+## [0.2.2] - 2026-11-18
+
+### Added
+
+- `--version` option to print version
+
+### Removed
+
+- removed unnecessary dependencies
+
 ## [0.2.1] - 2026-07-11
 
-## Changed
+### Changed
 
 - `sdist` build only includes package files
 - Supports python version is `3.11+`
